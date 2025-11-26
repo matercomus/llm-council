@@ -1,8 +1,8 @@
-"""OpenRouter API client for making LLM requests."""
+"""Ollama API client for making LLM requests."""
 
 import httpx
 from typing import List, Dict, Any, Optional
-from .config import OPENROUTER_API_KEY, OPENROUTER_API_URL, DEFAULT_TIMEOUT
+from .config import OLLAMA_HOST, DEFAULT_TIMEOUT
 
 
 async def query_model(
@@ -11,10 +11,10 @@ async def query_model(
     timeout: float = None
 ) -> Optional[Dict[str, Any]]:
     """
-    Query a single model via OpenRouter API.
+    Query a single model via Ollama API.
 
     Args:
-        model: OpenRouter model identifier (e.g., "openai/gpt-4o")
+        model: Ollama model identifier (e.g., "gemma3:latest")
         messages: List of message dicts with 'role' and 'content'
         timeout: Request timeout in seconds (defaults to DEFAULT_TIMEOUT from config)
 
@@ -24,42 +24,35 @@ async def query_model(
     if timeout is None:
         timeout = DEFAULT_TIMEOUT
     
-    headers = {
-        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-        "Content-Type": "application/json",
-    }
-
+    url = f"http://{OLLAMA_HOST}/api/chat"
+    
     payload = {
         "model": model,
         "messages": messages,
+        "stream": False,
     }
 
     try:
         async with httpx.AsyncClient(timeout=timeout) as client:
             response = await client.post(
-                OPENROUTER_API_URL,
-                headers=headers,
+                url,
                 json=payload
             )
             response.raise_for_status()
 
             data = response.json()
-            message = data['choices'][0]['message']
+            message = data['message']
 
             return {
                 'content': message.get('content'),
-                'reasoning_details': message.get('reasoning_details')
+                'reasoning_details': None  # Ollama API doesn't provide this
             }
 
     except httpx.ConnectError as e:
-        print(f"Connection error querying model {model}: Cannot connect to OpenRouter API. Check your internet connection. Error: {e}")
+        print(f"Connection error querying model {model}: Cannot connect to Ollama at {OLLAMA_HOST}. Is Ollama running? Error: {e}")
         return None
     except httpx.HTTPStatusError as e:
         print(f"HTTP error querying model {model}: Status {e.response.status_code}. Response: {e.response.text}")
-        if e.response.status_code == 401:
-            print("  Hint: Check if OPENROUTER_API_KEY is valid")
-        elif e.response.status_code == 404:
-            print(f"  Hint: Model '{model}' may not exist or may not be available")
         return None
     except httpx.TimeoutException as e:
         print(f"Timeout error querying model {model}: Request took longer than {timeout}s. Error: {e}")
@@ -77,7 +70,7 @@ async def query_models_parallel(
     Query multiple models in parallel.
 
     Args:
-        models: List of OpenRouter model identifiers
+        models: List of Ollama model identifiers
         messages: List of message dicts to send to each model
 
     Returns:

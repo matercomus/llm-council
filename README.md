@@ -2,6 +2,12 @@
 
 ![llmcouncil](header.jpg)
 
+> **Note:** This is a fork of the original [LLM Council](https://github.com/karpathy/llm-council) repository with the following enhancements:
+> - **Ollama support**: Run models locally using [Ollama](https://ollama.com/) without API keys. Choose between OpenRouter and Ollama by setting the `ROUTER_TYPE` environment variable in your `.env` file (openrouter or ollama).
+> - **Environment-based configuration**: All settings (router type, API keys, models, timeouts) can be configured via `.env` file. Copy `.env.example` to `.env` and customize as needed. Response timeout settings (`DEFAULT_TIMEOUT`, `TITLE_GENERATION_TIMEOUT`) can be adjusted for slower models or networks.
+> - **Enhanced frontend design**: Real-time execution timers showing start time, end time, and elapsed duration for each stage in the top-right corner. Timestamps displayed in 24-hour format (HH:mm:ss.S) with live updates during execution.
+> - **Conversation management**: Delete individual conversations or all conversations at once with smooth slide-out animations for better user experience. Hover over conversation items to reveal delete buttons.
+
 The idea of this repo is that instead of asking a question to your favorite LLM provider (e.g. OpenAI GPT 5.1, Google Gemini 3.0 Pro, Anthropic Claude Sonnet 4.5, xAI Grok 4, eg.c), you can group them into your "LLM Council". This repo is a simple, local web app that essentially looks like ChatGPT except it uses OpenRouter to send your query to multiple LLMs, it then asks them to review and rank each other's work, and finally a Chairman LLM produces the final response.
 
 In a bit more detail, here is what happens when you submit a query:
