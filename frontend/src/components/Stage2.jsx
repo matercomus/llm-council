@@ -41,6 +41,7 @@ function deAnonymizeText(text, labelToModel) {
 
 export default function Stage2({ rankings, labelToModel, aggregateRankings, timings }) {
   const [activeTab, setActiveTab] = useState(0);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   if (!rankings || rankings.length === 0) {
     return null;
@@ -62,53 +63,62 @@ export default function Stage2({ rankings, labelToModel, aggregateRankings, timi
         </div>
       )}
       <div className="stage-header">
-        <h3 className="stage-title">Stage 2: Peer Rankings</h3>
-      </div>
-
-      <h4>Raw Evaluations</h4>
-      <p className="stage-description">
-        Each model evaluated all responses (anonymized as Response A, B, C, etc.) and provided rankings.
-        Below, model names are shown in <strong>bold</strong> for readability, but the original evaluation used anonymous labels.
-      </p>
-
-      <div className="tabs">
-        {rankings.map((rank, index) => (
-          <button
-            key={index}
-            className={`tab ${activeTab === index ? 'active' : ''}`}
-            onClick={() => setActiveTab(index)}
-          >
-            {rank.model.split('/')[1] || rank.model}
+        <div className="stage-header-content" onClick={() => setIsCollapsed(!isCollapsed)}>
+          <button className={`stage-toggle ${isCollapsed ? 'collapsed' : ''}`}>
+            ▼
           </button>
-        ))}
+          <h3 className="stage-title">Stage 2: Peer Rankings</h3>
+        </div>
       </div>
 
-      <div className="tab-content">
-        <div className="ranking-model">
-          {rankings[activeTab].model}
-        </div>
-        <div className="ranking-content markdown-content">
-          <ReactMarkdown>
-            {deAnonymizeText(rankings[activeTab].ranking, labelToModel)}
-          </ReactMarkdown>
-        </div>
+      {!isCollapsed && (
+        <>
+          <h4>Raw Evaluations</h4>
+          <p className="stage-description">
+            Each model evaluated all responses (anonymized as Response A, B, C, etc.) and provided rankings.
+            Below, model names are shown in <strong>bold</strong> for readability, but the original evaluation used anonymous labels.
+          </p>
 
-        {rankings[activeTab].parsed_ranking &&
-         rankings[activeTab].parsed_ranking.length > 0 && (
-          <div className="parsed-ranking">
-            <strong>Extracted Ranking:</strong>
-            <ol>
-              {rankings[activeTab].parsed_ranking.map((label, i) => (
-                <li key={i}>
-                  {labelToModel && labelToModel[label]
-                    ? labelToModel[label].split('/')[1] || labelToModel[label]
-                    : label}
-                </li>
-              ))}
-            </ol>
+          <div className="tabs">
+            {rankings.map((rank, index) => (
+              <button
+                key={index}
+                className={`tab ${activeTab === index ? 'active' : ''}`}
+                onClick={() => setActiveTab(index)}
+              >
+                {rank.model.split('/')[1] || rank.model}
+              </button>
+            ))}
           </div>
-        )}
-      </div>
+
+          <div className="tab-content">
+            <div className="ranking-model">
+              {rankings[activeTab].model}
+            </div>
+            <div className="ranking-content markdown-content">
+              <ReactMarkdown>
+                {deAnonymizeText(rankings[activeTab].ranking, labelToModel)}
+              </ReactMarkdown>
+            </div>
+
+            {rankings[activeTab].parsed_ranking &&
+             rankings[activeTab].parsed_ranking.length > 0 && (
+              <div className="parsed-ranking">
+                <strong>Extracted Ranking:</strong>
+                <ol>
+                  {rankings[activeTab].parsed_ranking.map((label, i) => (
+                    <li key={i}>
+                      {labelToModel && labelToModel[label]
+                        ? labelToModel[label].split('/')[1] || labelToModel[label]
+                        : label}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+          </div>
+        </>
+      )}
 
       {aggregateRankings && aggregateRankings.length > 0 && (
         <div className="aggregate-rankings">

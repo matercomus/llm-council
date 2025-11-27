@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import './Stage3.css';
 
@@ -26,6 +27,8 @@ function formatTimestamp(timestamp) {
 }
 
 export default function Stage3({ finalResponse, timings }) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   if (!finalResponse) {
     return null;
   }
@@ -46,16 +49,23 @@ export default function Stage3({ finalResponse, timings }) {
         </div>
       )}
       <div className="stage-header">
-        <h3 className="stage-title">Stage 3: Final Council Answer</h3>
-      </div>
-      <div className="final-response">
-        <div className="chairman-label">
-          Chairman: {finalResponse.model.split('/')[1] || finalResponse.model}
-        </div>
-        <div className="final-text markdown-content">
-          <ReactMarkdown>{finalResponse.response}</ReactMarkdown>
+        <div className="stage-header-content" onClick={() => setIsCollapsed(!isCollapsed)}>
+          <button className={`stage-toggle ${isCollapsed ? 'collapsed' : ''}`}>
+            ▼
+          </button>
+          <h3 className="stage-title">Stage 3: Final Council Answer</h3>
         </div>
       </div>
+      {!isCollapsed && (
+        <div className="final-response">
+          <div className="chairman-label">
+            Chairman: {finalResponse.model.split('/')[1] || finalResponse.model}
+          </div>
+          <div className="final-text markdown-content">
+            <ReactMarkdown>{finalResponse.response}</ReactMarkdown>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

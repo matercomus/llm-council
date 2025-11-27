@@ -13,3 +13,36 @@
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
 }
+
+.stage-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: transform 0.2s ease;
+  margin-right: 8px;
+  font-size: 12px;
+  width: 24px;
+  height: 24px;
+}
+
+.stage-toggle:hover {
+  color: #333;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.stage-toggle.collapsed {
+  transform: rotate(-90deg);
+}
+
+.stage-header-content {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex: 1;
+}
