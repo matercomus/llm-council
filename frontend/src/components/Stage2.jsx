@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import ElectionCard from './ElectionCard';
 import './Stage2.css';
 
 function formatDuration(seconds) {
@@ -115,20 +116,16 @@ export default function Stage2({ rankings, labelToModel, aggregateRankings, timi
           <p className="stage-description">
             Combined results across all peer evaluations (lower score is better):
           </p>
-          <div className="aggregate-list">
+          <div className="election-grid">
             {aggregateRankings.map((agg, index) => (
-              <div key={index} className="aggregate-item">
-                <span className="rank-position">#{index + 1}</span>
-                <span className="rank-model">
-                  {agg.model.split('/')[1] || agg.model}
-                </span>
-                <span className="rank-score">
-                  Avg: {agg.average_rank.toFixed(2)}
-                </span>
-                <span className="rank-count">
-                  ({agg.rankings_count} votes)
-                </span>
-              </div>
+              <ElectionCard
+                key={index}
+                rank={index + 1}
+                model={agg.model}
+                score={agg.average_rank}
+                voteDistribution={agg.vote_distribution || { '1st': 0, '2nd': 0, '3rd': 0 }}
+                totalVotes={agg.rankings_count}
+              />
             ))}
           </div>
         </div>

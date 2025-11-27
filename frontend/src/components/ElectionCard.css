@@ -1,0 +1,137 @@
+.election-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.election-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.election-card.expanded {
+  border-color: #4a90e2;
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.1);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.rank-badge {
+  background: #f0f0f0;
+  color: #666;
+  font-weight: 700;
+  font-size: 14px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.rank-badge.rank-1 {
+  background: #fff9c4;
+  color: #fbc02d;
+  border: 1px solid #fbc02d;
+}
+
+.rank-badge.rank-2 {
+  background: #f5f5f5;
+  color: #9e9e9e;
+  border: 1px solid #bdbdbd;
+}
+
+.rank-badge.rank-3 {
+  background: #ffe0b2;
+  color: #f57c00;
+  border: 1px solid #f57c00;
+}
+
+.model-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.model-logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.model-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.score-badge {
+  font-family: monospace;
+  font-size: 12px;
+  color: #666;
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.vote-bar {
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  display: flex;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.vote-segment {
+  height: 100%;
+  transition: width 0.5s ease-out;
+}
+
+.vote-segment.first { background: #fbc02d; }
+.vote-segment.second { background: #bdbdbd; }
+.vote-segment.third { background: #f57c00; }
+.vote-segment.other { background: #e0e0e0; }
+
+.card-details {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+  animation: slideDown 0.2s ease-out;
+}
+
+.voter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.voter-chip {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #f5f5f5;
+  color: #666;
+  border: 1px solid #e0e0e0;
+}
+
+.voter-chip.rank-1 {
+  background: #fffde7;
+  border-color: #fff9c4;
+  color: #f9a825;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

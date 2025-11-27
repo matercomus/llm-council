@@ -277,10 +277,19 @@ def calculate_aggregate_rankings(
     for model, positions in model_positions.items():
         if positions:
             avg_rank = sum(positions) / len(positions)
+            
+            # Calculate vote distribution
+            vote_distribution = {
+                "1st": positions.count(1),
+                "2nd": positions.count(2),
+                "3rd": positions.count(3)
+            }
+            
             aggregate.append({
                 "model": model,
                 "average_rank": round(avg_rank, 2),
-                "rankings_count": len(positions)
+                "rankings_count": len(positions),
+                "vote_distribution": vote_distribution
             })
 
     # Sort by average rank (lower is better)
