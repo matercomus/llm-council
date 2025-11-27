@@ -140,6 +140,12 @@ export default function Stage2({ rankings, labelToModel, aggregateRankings, timi
           </div>
         </div>
       )}
+
+      {(!aggregateRankings || aggregateRankings.length === 0) && rankings.length > 0 && (
+        <div className="aggregate-rankings-missing" style={{ padding: '1rem', color: '#666', fontStyle: 'italic', textAlign: 'center' }}>
+          Election results are not available for this conversation (legacy data).
+        </div>
+      )}
     </div>
   );
 }

@@ -135,7 +135,7 @@ def add_assistant_message(
     metadata: Optional[Dict[str, Any]] = None
 ):
     """
-    Add an assistant message with all 3 stages to a conversation.
+    Add an assistant message (full council response) to a conversation.
 
     Args:
         conversation_id: Conversation identifier
@@ -156,7 +156,10 @@ def add_assistant_message(
     }
     
     if metadata:
+        print(f"Saving metadata for conversation {conversation_id}")
         message["metadata"] = metadata
+    else:
+        print(f"No metadata provided for conversation {conversation_id}")
 
     conversation["messages"].append(message)
 
