@@ -25,6 +25,9 @@ export default function ElectionCard({ rank, model, score, voteDistribution, tot
 
   // Calculate percentages for the bar
   const getPercent = (count) => (count / totalVotes) * 100;
+  
+  const isLegacy = !voteDistribution;
+  const hasTop3Votes = !isLegacy && (voteDistribution['1st'] > 0 || voteDistribution['2nd'] > 0 || voteDistribution['3rd'] > 0);
 
   return (
     <div 
@@ -48,32 +51,52 @@ export default function ElectionCard({ rank, model, score, voteDistribution, tot
           <span className="model-name">{modelName}</span>
         </div>
 
-        <div className="score-badge">
-          Avg: {score.toFixed(2)}
+        <div className="score-badge" title="(Lower is better)">
+          Avg Rank: {score.toFixed(2)}
         </div>
       </div>
 
       <div className="vote-bar">
-        {voteDistribution['1st'] > 0 && (
+        {isLegacy ? (
           <div 
-            className="vote-segment first" 
-            style={{ width: `${getPercent(voteDistribution['1st'])}%` }}
-            title={`${voteDistribution['1st']} votes for 1st place`}
-          />
-        )}
-        {voteDistribution['2nd'] > 0 && (
+            className="vote-segment other" 
+            style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: '#999' }}
+            title="Detailed vote distribution not available for this conversation"
+          >
+            Legacy Data
+          </div>
+        ) : !hasTop3Votes ? (
           <div 
-            className="vote-segment second" 
-            style={{ width: `${getPercent(voteDistribution['2nd'])}%` }}
-            title={`${voteDistribution['2nd']} votes for 2nd place`}
-          />
-        )}
-        {voteDistribution['3rd'] > 0 && (
-          <div 
-            className="vote-segment third" 
-            style={{ width: `${getPercent(voteDistribution['3rd'])}%` }}
-            title={`${voteDistribution['3rd']} votes for 3rd place`}
-          />
+            className="vote-segment other" 
+            style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: '#999' }}
+            title="Model received votes but none in top 3"
+          >
+            No Top 3 Votes
+          </div>
+        ) : (
+          <>
+            {voteDistribution['1st'] > 0 && (
+              <div 
+                className="vote-segment first" 
+                style={{ width: `${getPercent(voteDistribution['1st'])}%` }}
+                title={`${voteDistribution['1st']} votes for 1st place`}
+              />
+            )}
+            {voteDistribution['2nd'] > 0 && (
+              <div 
+                className="vote-segment second" 
+                style={{ width: `${getPercent(voteDistribution['2nd'])}%` }}
+                title={`${voteDistribution['2nd']} votes for 2nd place`}
+              />
+            )}
+            {voteDistribution['3rd'] > 0 && (
+              <div 
+                className="vote-segment third" 
+                style={{ width: `${getPercent(voteDistribution['3rd'])}%` }}
+                title={`${voteDistribution['3rd']} votes for 3rd place`}
+              />
+            )}
+          </>
         )}
       </div>
 

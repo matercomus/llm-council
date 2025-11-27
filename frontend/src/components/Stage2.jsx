@@ -112,7 +112,7 @@ export default function Stage2({ rankings, labelToModel, aggregateRankings, timi
 
       {aggregateRankings && aggregateRankings.length > 0 && (
         <div className="aggregate-rankings">
-          <h4>Aggregate Rankings (Street Cred)</h4>
+          <h4>Aggregate Rankings (Street Cred) - Election Results</h4>
           <p className="stage-description">
             Combined results across all peer evaluations (lower score is better):
           </p>
@@ -123,7 +123,7 @@ export default function Stage2({ rankings, labelToModel, aggregateRankings, timi
                 rank={index + 1}
                 model={agg.model}
                 score={agg.average_rank}
-                voteDistribution={agg.vote_distribution || { '1st': 0, '2nd': 0, '3rd': 0 }}
+                voteDistribution={agg.vote_distribution}
                 totalVotes={agg.rankings_count}
               />
             ))}
